@@ -7,12 +7,25 @@
 		<key>BloquearLlamadas.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>MyExtensionCall.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>B7A6FA372DC74FAC00762F5C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7A6FA492DC7509200762F5C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

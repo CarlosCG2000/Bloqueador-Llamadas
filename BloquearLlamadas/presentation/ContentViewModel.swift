@@ -18,9 +18,17 @@ final class ContentViewModel {
     var phoneField: String = ""
     var nameField: String = ""
     
+    var selectedPrefix: CountryPrefix? = CountryPrefix(name: "🇪🇸", prefix: "34")
+    var countryPrefixes: [CountryPrefix] = []
+    
     var errorMessage: String? = nil  // ← Nuevo para mostrar errores
 
     let bundleIdentifier = "com.carloscg00.BloquearLlamadas.MyExtensionCall" /// Este identificador debe ser exactamente el Bundle Identifier de tu extensión de Call Directory, es decir, el target de tipo Call Directory Extension en tu proyecto.
+
+    // MARK: - Constructor
+    init() {
+        loadPrefixes()
+    }
 
     // MARK: - Public Methods
     func filterContacts(from contacts: [ContactModel]) -> [ContactModel] {
@@ -36,6 +44,26 @@ final class ContentViewModel {
 
     func clearFilter() {
         nameFilter = ""
+    }
+    
+    func loadPrefixes() {
+        guard let url = Bundle.main.url(forResource: "paises", withExtension: "json") else {
+            print("No se encontró el archivo JSON.")
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decoded = try JSONDecoder().decode([CountryPrefix].self, from: data)
+            self.countryPrefixes = decoded
+            self.selectedPrefix = decoded.first
+        } catch {
+            print("Error al decodificar JSON: \(error.localizedDescription)")
+        }
+    }
+
+    func fullPhoneNumber() -> String {
+        "\(selectedPrefix?.prefix ?? "")\(phoneField)"
     }
 
     func addContact(to contacts: [ContactModel], modelContext: ModelContext) {
@@ -55,7 +83,7 @@ final class ContentViewModel {
         }
 
         // Crear y guardar nuevo contacto
-        let contact = ContactModel(numberPhone: phoneField, nameUser: nameField)
+        let contact = ContactModel(numberPhone: fullPhoneNumber(), nameUser: nameField)
         
        modelContext.insert(contact)
         
@@ -65,6 +93,12 @@ final class ContentViewModel {
        } catch {
            errorMessage = "Error al guardar el contacto"
        }
+    }
+    
+    func clearContact() {
+        nameField = ""
+        phoneField = ""
+        errorMessage = nil
     }
     
     func deleteContact(_ contact: ContactModel, modelContext: ModelContext) {

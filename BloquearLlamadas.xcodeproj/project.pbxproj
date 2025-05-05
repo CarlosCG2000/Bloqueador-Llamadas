@@ -45,6 +45,7 @@
 			membershipExceptions = (
 				data/ContactModel.swift,
 				data/ContainerDB.swift,
+				data/CountryPrefix.swift,
 			);
 			target = B7A6FA492DC7509200762F5C /* MyExtensionCall */;
 		};
