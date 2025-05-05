@@ -31,6 +31,29 @@ final class ContentViewModel {
     }
 
     // MARK: - Public Methods
+    
+    /// Función para filtrar contactos según el nombre.
+    ///
+    /// Esta función toma una lista de contactos y devuelve una nueva lista que contiene solo aquellos contactos cuyo nombre coincide con el filtro proporcionado.
+    ///
+    /// - Parameters:
+    ///     - contacts: La lista de contactos a filtrar.
+    ///
+    /// - Returns: Una lista de contactos filtrados según el nombre.
+    /// - Throws: Ninguno.
+    /// - Important: El filtro se aplica de forma insensible a mayúsculas y minúsculas.
+    ///
+    /// ## Ejemplo de uso
+    /// ```swift
+    ///   let filteredContacts = filterContacts(from: contacts)
+    ///
+    ///   if nameFilter.isEmpty {
+    ///     print("No hay filtro aplicado")
+    ///    } else {
+    ///     print("Filtro aplicado: \(nameFilter)")
+    ///    }
+    /// ```
+    ///
     func filterContacts(from contacts: [ContactModel]) -> [ContactModel] {
         if nameFilter.isEmpty {
             return contacts
@@ -42,10 +65,37 @@ final class ContentViewModel {
         }
     }
 
+    /// Función para limpiar el filtro aplicado.
+    ///
+    /// Esta función restablece el filtro de búsqueda a una cadena vacía, eliminando cualquier filtro previamente aplicado.
+    ///
+    /// - Parameters: Ninguno.
+    /// - Returns: Ninguno.
+    /// - Throws: Ninguno.
+    /// - Important: Esta función no afecta a la lista de contactos, solo restablece el filtro.
     func clearFilter() {
         nameFilter = ""
     }
     
+    /// Cargar los prefijos de país desde un archivo JSON.
+    ///
+    /// Esta función carga los prefijos de país desde un archivo JSON ubicado en el paquete principal de la aplicación.
+    /// Si el archivo no se encuentra o hay un error al decodificarlo, se imprime un mensaje de error.
+    ///
+    /// - Parameters: Ninguno.
+    /// - Returns: Ninguno.
+    /// - Throws: Ninguno.
+    ///
+    /// ## Ejemplo de uso
+    /// ```swift
+    ///   loadPrefixes()
+    ///   if countryPrefixes.isEmpty {
+    ///     print("No se encontraron prefijos de país.")
+    ///   } else {
+    ///     print("Prefijos de país cargados correctamente.")
+    ///   }
+    ///```
+    ///
     func loadPrefixes() {
         guard let url = Bundle.main.url(forResource: "paises", withExtension: "json") else {
             print("No se encontró el archivo JSON.")
@@ -66,6 +116,28 @@ final class ContentViewModel {
         "\(selectedPrefix?.prefix ?? "")\(phoneField)"
     }
 
+    /// Agregar un nuevo contacto a la lista de contactos.
+    ///
+    /// Esta función toma una lista de contactos y un contexto de modelo, valida los campos de entrada y guarda el nuevo contacto en la base de datos.
+    /// Si hay un error durante el proceso, se establece un mensaje de error.
+    ///
+    /// - Parameters:
+    ///    - contacts: La lista de contactos existentes. ``ContactModel``.
+    ///    - modelContext: El contexto del modelo utilizado para guardar el nuevo contacto.
+    /// - Returns: Void.
+    /// - Throws: Ninguno.
+    /// - Important: Asegúrate de que el contexto del modelo esté configurado correctamente antes de llamar a esta función.
+    ///
+    /// ## Ejemplo de uso
+    /// ```swift
+    ///   addContact(to: contacts, modelContext: modelContext)
+    ///   if errorMessage == nil {
+    ///     print("Contacto agregado correctamente.")
+    ///     } else {
+    ///     print("Error al agregar contacto: \(errorMessage!)")
+    ///     }
+    ///     ```
+    ///
     func addContact(to contacts: [ContactModel], modelContext: ModelContext) {
         errorMessage = nil // Limpiar error anterior
         
