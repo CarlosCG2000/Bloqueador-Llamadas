@@ -58,7 +58,7 @@ struct AddContactFormView: View {
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.red.opacity(0.8))
+                        .background(Color.blue.opacity(0.8))
                         .cornerRadius(10)
                         .shadow(radius: 4)
                 }
