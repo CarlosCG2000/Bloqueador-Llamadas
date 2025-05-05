@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CallKit
 import SwiftData
 
 struct ContentView: View {
@@ -25,7 +24,7 @@ struct ContentView: View {
 
                 AddContactFormView(vm: vm, contacts: contacts, modelContext: modelContext)
 
-                ContactListView(contacts: filteredContacts) { indexSet in
+                ContactListView(vm: vm, contacts: filteredContacts, modelContext: modelContext) { indexSet in /// Closure para manejar la eliminación de contactos
                     for index in indexSet {
                         let contact = contacts[index]
                         vm.deleteContact(contact, modelContext: modelContext)

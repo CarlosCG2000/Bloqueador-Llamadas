@@ -10,10 +10,12 @@ import SwiftData
 
 @Model
 class ContactModel {
+    var id: UUID
     var numberPhone: String
     var nameUser: String
     
-    init(numberPhone: String, nameUser: String) {
+    init(id: UUID = UUID(), numberPhone: String, nameUser: String) {
+        self.id = id
         self.numberPhone = numberPhone
         self.nameUser = nameUser
     }

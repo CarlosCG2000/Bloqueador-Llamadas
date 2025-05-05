@@ -16,7 +16,7 @@ struct AddContactFormView: View {
     
     var body: some View {
         VStack {
-            Text("Añadir Contacto")
+            Text("Añadir Nuevo Contacto")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.horizontal)
@@ -38,7 +38,7 @@ struct AddContactFormView: View {
                             }
                         }
                         .pickerStyle(.menu)
-                        .frame(width: 100) // 60
+                        .frame(width: 100)
                         
                         TextField("Número telefónico", text: $vm.phoneField, axis: .horizontal)
                             .textFieldStyle(.roundedBorder)
@@ -51,14 +51,14 @@ struct AddContactFormView: View {
                 
                 Button(action: {
                     vm.addContact(to: contacts, modelContext: modelContext)
-                    vm.clearContact()
+                    if vm.errorMessage == nil { vm.clearContact() }
                 }) {
                     Text("🔐")
                         // .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.blue.opacity(0.8))
+                        .background(Color.red.opacity(0.7))
                         .cornerRadius(10)
                         .shadow(radius: 4)
                 }
@@ -66,6 +66,8 @@ struct AddContactFormView: View {
             /// Mostrar error si existe
             if let errorMessage = vm.errorMessage {
                  Text(errorMessage)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    // .multilineTextAlignment(.trailing)
                      .foregroundColor(.red)
                      .font(.callout)
                      .padding(.horizontal)

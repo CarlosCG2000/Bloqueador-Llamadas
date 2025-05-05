@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import CallKit
 import SwiftData
+import CallKit
 
 @MainActor
 @Observable
@@ -75,6 +75,14 @@ final class ContentViewModel {
             errorMessage = "Nombre o número vacío"
             return
         }
+        
+        // Validar formato de número
+        let phoneRegex = "^[0-9]{9}$" // Formato de número español (9 dígitos)
+        let phonePredicate = NSPredicate(format: "SELF MATCHES %@", phoneRegex) // Expresión regular para validar el número de teléfono
+        guard phonePredicate.evaluate(with: phoneField) else {
+            errorMessage = "Formato de número inválido"
+            return
+        }
 
         // Verificar si el número ya está bloqueado
         if contacts.contains(where: { $0.numberPhone == phoneField }) {
@@ -106,8 +114,25 @@ final class ContentViewModel {
         modelContext.delete(contact)
         try? modelContext.save() // Importante guardar los cambios después de eliminar el contacto
     }
+    
+    func updateContact(_ updated: ContactModel, contacts: [ContactModel], modelContext: ModelContext) {
+        // Busca el objeto persistido en SwiftData (por referencia)
+         if let contact = contacts.first(where: { $0.id == updated.id }) {
+             // Modifica directamente los campos deseados
+             contact.nameUser = updated.nameUser
+             contact.numberPhone = updated.numberPhone
+
+             // Guarda los cambios (opcional si estás dentro de una transacción automática)
+             do {
+                 try modelContext.save()
+             } catch {
+                 print("Error al guardar contacto actualizado: \(error)")
+             }
+         }
+    }
 
     func reloadExtension() {
+        // Cargar la extensión de bloqueo de llamadas
         CXCallDirectoryManager.sharedInstance.reloadExtension(withIdentifier: bundleIdentifier) { error in
             if let error = error {
                 print("Error cargando extension: \(error.localizedDescription)")
